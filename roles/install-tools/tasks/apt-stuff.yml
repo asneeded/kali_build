@@ -1,0 +1,27 @@
+---
+- name: "Installing Packages"
+  package:
+    name:
+      - jq
+      - pipx
+      - ntpdate
+      - flameshot
+      - golang
+      - rsyslog
+      - ufw
+    state: latest
+  become: true
+  become_method: sudo
+
+- name: "Setup GOROOT"
+  ansible.builtin.lineinfile:
+    path: /home/{{ ansible_user }}/.zshrc
+    line: export GOROOT=/usr/lib/go
+- name: "Setup GOPATH"
+  ansible.builtin.lineinfile:
+    path: /home/{{ ansible_user }}/.zshrc
+    line: export GOPATH=$HOME/go
+- name: "Update PATH var"
+  ansible.builtin.lineinfile:
+    path: /home/{{ ansible_user }}/.zshrc
+    line: export PATH=$GOPATH/bin:$GOROOT/bin:$PATH

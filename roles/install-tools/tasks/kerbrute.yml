@@ -1,0 +1,22 @@
+---
+- name: "Cloning Kerbrute Repo"
+  git:
+    repo: "https://github.com/ropnop/kerbrute"
+    dest: "/tmp/kerbrute"
+- name: "Building Kerbrute"
+  shell: |
+    cd /tmp/kerbrute
+    go build
+- name: "Making local/bin dir"
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.local/bin"
+    state: directory
+    mode: '0750'
+- name: "Moving Kerbrute to bin"
+  ansible.builtin.copy:
+    remote_src: true
+    src: "/tmp/kerbrute/kerbrute"
+    dest: "{{ ansible_env.HOME }}/.local/bin/"    
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0750'
