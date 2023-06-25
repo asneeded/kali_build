@@ -6,8 +6,10 @@
       debug: var=ansible_env.HOME
   roles:
     - role: "roles/configure-tmux"
+    - role: "roles/customize_desktop"
       #- role: "roles/customize-terminal"
     - role: "roles/install-tools"
+    - role: "roles/customize_desktop"
     - role: "roles/customize-browser"
     - role: "roles/configure-logging"
     - role: gantsign.visual-studio-code
