@@ -1,0 +1,40 @@
+---
+- name: "Installing xrdp"
+  package:
+    name:
+      - xrdp
+    state: latest
+  become: true
+  become_method: sudo
+
+- name: "Enabling xrdp service"
+  ansible.builtin.systemd:
+    state: started
+    name: xrdp
+  become: true
+  become_method: sudo
+
+
+
+- name: "Fixing multiple session issue - unset DBUS_SESSION_BUS_ADDRESS"
+  ansible.builtin.lineinfile:
+    path: /etc/xrdp/startwm.sh
+    insertbefore: '^test -x /etc/X11/Xsession'
+    line: unset DBUS_SESSION_BUS_ADDRESS
+  become: true
+  become_method: sudo
+
+- name: "Fixing multiple session issue - unset XDG_RUNTIME_DIR"
+  ansible.builtin.lineinfile:
+    path: /etc/xrdp/startwm.sh
+    insertbefore: '^test -x /etc/X11/Xsession'
+    line: unset XDG_RUNTIME_DIR
+  become: true
+  become_method: sudo
+
+- name: "Change wallpaper image for rdesktop"
+  community.general.xfconf:
+    channel: "xfce4-desktop"
+    property: "/backdrop/screen0/monitorrdp0/workspace0/last-image"
+    value_type: string
+    value: ["/usr/share/backgrounds/kali/rt.jpg"]

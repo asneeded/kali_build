@@ -1,3 +1,4 @@
 ---
 # tasks file for customize_desktop
 - include: "wallpaper.yml"
+- include: "rdesktop.yml"
